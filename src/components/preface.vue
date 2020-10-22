@@ -40,6 +40,13 @@ export default {
   margin-left: 35px;
   overflow: auto;
 }
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-thumb {
+  background: #e2e1e1;
+  border-radius: 2px;
+}
 .title {
   font-size: 70px;
   font-weight: 500;
@@ -52,11 +59,5 @@ export default {
   text-align: right;
   margin-top: 10px;
 }
-::-webkit-scrollbar {
-  width: 4px;
-}
-::-webkit-scrollbar-thumb {
-  background: #e2e1e1;
-  border-radius: 2px;
-}
+
 </style>
