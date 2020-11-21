@@ -14,8 +14,11 @@ const routes = [
       { path: '/home/copyright', component: () => import('../components/copyright') },
       { path: '/home/lastpage', component: () => import('../components/lastpage') },
       { path: '/home/message', component: () => import('../components/message') },
+      { path: '/home/title', component: () => import('../components/title') },
+      { path: '/home/detail', name:"detail",component: () => import('../components/detail') },
     ]
-  }
+  },
+  {path:'/admin',component:()=>import('../views/adminhome')}
 ]
 
 const router = new VueRouter({

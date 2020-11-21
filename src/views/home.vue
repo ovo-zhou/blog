@@ -48,7 +48,7 @@ export default {
   width: 500px;
   height: 800px;
   float: left;
-  /* background: burlywood; */
+  background: burlywood;
 }
 .center{
   width: 600px;
@@ -60,7 +60,7 @@ export default {
   width: 500px;
   height: 800px;
   float: left;
-  /* background: coral; */
+  background: coral;
 }
 .bar{
   width: 80px;
