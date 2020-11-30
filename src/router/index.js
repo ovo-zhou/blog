@@ -6,7 +6,7 @@ Vue.use(VueRouter)
 const routes = [
   { path: '/', redirect: '/home' },
   {
-    path: '/home', component: () => import('../views/home'),redirect:'/home/cover',
+    path: '/home', component: () => import('../views/home'), redirect: '/home/cover',
     children: [
       { path: '/home/cover', component: () => import('../components/cover') },
       { path: '/home/preface', component: () => import('../components/preface') },
@@ -15,10 +15,15 @@ const routes = [
       { path: '/home/lastpage', component: () => import('../components/lastpage') },
       { path: '/home/message', component: () => import('../components/message') },
       { path: '/home/title', component: () => import('../components/title') },
-      { path: '/home/detail', name:"detail",component: () => import('../components/detail') },
+      { path: '/home/detail', name: "detail", component: () => import('../components/detail') },
     ]
   },
-  {path:'/admin',component:()=>import('../views/adminhome')}
+  {
+    path: '/admin', component: () => import('../views/adminhome'),
+    children: [
+      { path: "/admin/blogwrite", component: () => import('../components/blogwrite') }
+    ]
+  }
 ]
 
 const router = new VueRouter({
