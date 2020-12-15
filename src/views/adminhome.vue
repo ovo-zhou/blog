@@ -13,8 +13,7 @@
     </div>
     <div class="menu">
       <div><router-link to="/admin/blogwrite">文章发布</router-link></div>
-      <div><router-link to="#">文章管理</router-link></div>
-      <div><router-link to="#">资源管理</router-link></div>
+      <div><router-link to="/admin/resourse">资源管理</router-link></div>
       <div><router-link to="#">留言查看</router-link></div>
     </div>
     <div class="main">

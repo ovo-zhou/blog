@@ -21,7 +21,8 @@ const routes = [
   {
     path: '/admin', component: () => import('../views/adminhome'),
     children: [
-      { path: "/admin/blogwrite", component: () => import('../components/blogwrite') }
+      { path: "/admin/blogwrite", component: () => import('../components/blogwrite') },
+      { path: "/admin/resourse", component: () => import('../components/resourse') }
     ]
   }
 ]

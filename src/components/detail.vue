@@ -5,7 +5,7 @@
       <span class="date">{{ blog.releaseDate }}</span>
       <span>第一梦</span>
     </div>
-    <p class="content">{{blog.content}}</p>
+    <div class="content" v-html="blog.content">{{blog.content}}</div>
   </div>
 </template>
 
@@ -30,13 +30,6 @@ export default {
   margin-top: 50px;
   margin-left: 35px;
   overflow: auto;
-}
-::-webkit-scrollbar {
-  width: 4px;
-}
-::-webkit-scrollbar-thumb {
-  background: #e2e1e1;
-  border-radius: 2px;
 }
 span {
   font-size: 12px;

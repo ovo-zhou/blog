@@ -4,25 +4,57 @@
       <el-col :span="4">
         <!-- 所有的目录 -->
         <div class="catalog">
-          <p class="add" @click="dialogFormVisible = true">添加类别</p>
+          <div class="item">
+            <p class="add" @click="openAddCatalog">添加类别</p>
+          </div>
           <template v-for="(item, index) in catalog">
-            <p :key="index" @click="getBlogBySortId(item.sortId)">
-              {{ item.sortName
-              }}<span class="icon"><i class="el-icon-more-outline"></i></span>
-            </p>
+            <div :key="index" class="item">
+              <el-row>
+                <el-col :span="20">
+                  <p @click="getBlogBySortId(item.sortId)">
+                    {{ item.sortName }}
+                  </p>
+                </el-col>
+                <el-col :span="4">
+                  <el-dropdown>
+                    <img class="icon" src="../assets/more.png" />
+                    <el-dropdown-menu slot="dropdown">
+                      <el-dropdown-item><p @click="openCatalogEdit(item)">编辑</p></el-dropdown-item>
+                      <el-dropdown-item><p @click="deleteCatalog(item.sortId)">删除</p></el-dropdown-item>
+                    </el-dropdown-menu>
+                  </el-dropdown>
+                </el-col>
+              </el-row>
+            </div>
           </template>
         </div>
       </el-col>
       <el-col :span="4">
         <!-- 当前目录下的所有文章 -->
         <div class="article_title">
-          <p class="add" @click="AddBlog">
-            写博客
-          </p>
+          <div class="item">
+            <p class="add" @click="AddBlog">写博客</p>
+          </div>
           <template v-for="(item, index) in blog">
-            <p :key="index" @click="update(item)">
-              {{ item.title }} <span class="icon"><i class="el-icon-edit"></i></span>
-            </p>
+            <div :key="index" class="item">
+              <el-row>
+                <el-col :span="20">
+                  <p @click="update(item)">
+                    {{ item.title }}
+                  </p>
+                </el-col>
+                <el-col :span="4">
+                  <el-dropdown>
+                    <img class="icon" src="../assets/more1.png" />
+                    <el-dropdown-menu slot="dropdown">
+                      <el-dropdown-item
+                        ><p @click="deleteBlog(item.blogId)">删除</p></el-dropdown-item
+                      >
+                    </el-dropdown-menu>
+                  </el-dropdown>
+                </el-col>
+              </el-row>
+            </div>
           </template>
         </div>
       </el-col>
@@ -46,12 +78,12 @@
                 v-model="form.ReleaseDate"
                 value-format="yyyy-MM-ddTHH:mm:ss"
               ></el-date-picker>
+              <el-button type="primary" plain @click="onSubmit" style="margin-left: 20px">
+                保存
+              </el-button>
             </el-form-item>
             <el-form-item label="正文">
               <editor ref="content" :html="text" />
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="onSubmit">发布</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -64,10 +96,23 @@
       width="30%"
       top="30vh"
     >
-      <el-input v-model="SortName"></el-input>
+      <el-input v-model="Sort.sortName"></el-input>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
         <el-button type="primary" @click="AddSort">确 定</el-button>
+      </div>
+    </el-dialog>
+    <el-dialog
+      title="编辑"
+      :visible.sync="dialogFormVisible1"
+      :modal="false"
+      width="30%"
+      top="30vh"
+    >
+      <el-input v-model="Sort.sortName"></el-input>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible1 = false">取 消</el-button>
+        <el-button type="primary" @click="updateSort">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -90,7 +135,11 @@ export default {
       blog: [],
       text: "",
       dialogFormVisible: false,
-      SortName: "",
+      dialogFormVisible1: false,
+      Sort: {
+        sortId: 0,
+        sortName: "",
+      },
       currentSortId: null,
       editState: "create",
     };
@@ -102,16 +151,69 @@ export default {
     this.getSort();
   },
   methods: {
+    //删除目录
+    deleteCatalog(id){
+      console.log(id)
+      this.$confirm("此操作将永久删除该类别下的所有博客, 请谨慎！", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      }).then(() => {
+        get("/api/Sort/DeleteSort", { id: id }).then((res) => {
+          console.log(res);
+          if (res.status === 200) {
+            this.getSort();
+            this.blog=[]
+          }
+        });
+      });
+    },
+    //删除博客
+    deleteBlog(id) {
+      console.log(id);
+      this.$confirm("此操作将永久删除该博客, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      }).then(() => {
+        get("/api/Blog/DeleteBlog", { id: id }).then((res) => {
+          console.log(res);
+          if (res.status === 200) {
+            this.getBlog(this.currentSortId);
+          }
+        });
+      });
+    },
+    //打开目录编辑弹窗
+    openCatalogEdit(item) {
+      console.log(item);
+      this.dialogFormVisible1 = true;
+      this.Sort.sortId = item.sortId;
+      this.Sort.sortName = item.sortName;
+    },
+    //更新目录update
+    updateSort() {
+      post("/api/Sort/UpdateSort", this.Sort).then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          this.dialogFormVisible1 = false;
+          this.getSort();
+        }
+      });
+    },
+    openAddCatalog() {
+      this.dialogFormVisible = true;
+      this.Sort.sortName = "";
+    },
     //添加新类别
     AddSort() {
-      if (this.SortName === "") {
+      if (this.Sort.sortName === "") {
         this.$message.error("类别不能为空┗|｀O′|┛ 嗷~~");
         return;
       }
-      post("/api/Sort/AddSort", { sortName: this.SortName }).then((res) => {
+      post("/api/Sort/AddSort", this.Sort).then((res) => {
         console.log(res);
         if (res.status === 200) {
-          this.SortName = "";
           this.dialogFormVisible = false;
           this.getSort();
         }
@@ -145,7 +247,7 @@ export default {
       this.editState = "create";
       this.form.Title = "";
       this.form.ReleaseDate = "";
-      this.form.blogId = null;
+      this.form.blogId = 0;
       this.text = "";
     },
     //编辑文章
@@ -187,6 +289,10 @@ export default {
       if (this.editState === "update") {
         post("/api/Blog/UpdateBlog", this.form).then((res) => {
           if (res.status === 200) {
+            this.$message({
+              message: "保存成功",
+              type: "success",
+            });
             this.getBlog(this.form.SortId);
           }
           console.log(res);
@@ -196,6 +302,14 @@ export default {
         post("/api/Blog/AddBlog", this.form).then((res) => {
           if (res.status === 200) {
             this.getBlog(this.form.SortId);
+            this.$message({
+              message: "保存成功",
+              type: "success",
+            });
+            this.form.Title = "";
+            this.form.ReleaseDate = "";
+            this.form.blogId = 0;
+            this.text = "";
           }
           console.log(res);
         });
@@ -210,12 +324,16 @@ export default {
   background: white;
   height: 750px;
   border-right: rgb(102, 101, 100) solid 1px;
+  overflow:auto;
+}
+.item {
+  /* background: yellowgreen; */
+  border-bottom: rgb(102, 101, 100) solid 1px;
+  height: 50px;
 }
 .catalog p {
-  /* background: yellowgreen; */
   line-height: 50px;
   padding-left: 20px;
-  border-bottom: rgb(102, 101, 100) solid 1px;
   cursor: pointer;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -225,11 +343,11 @@ export default {
   height: 750px;
   background: white;
   border-right: rgb(102, 101, 100) solid 1px;
+overflow: auto;
 }
 .article_title p {
   line-height: 50px;
   padding-left: 20px;
-  border-bottom: rgb(102, 101, 100) solid 1px;
   cursor: pointer;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -245,7 +363,13 @@ export default {
 .fromstyle {
   margin-top: 20px;
 }
-.add{
-  color: #409EFF;
+.add {
+  color: #409eff;
+}
+.icon {
+  width: 26px;
+  line-height: 50px;
+  margin-top: 12px;
+  cursor: pointer;
 }
 </style>

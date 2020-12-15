@@ -27,4 +27,11 @@ body{
   background-repeat:no-repeat;
   border-radius: 20px;
 }
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-thumb {
+  background: #e2e1e1;
+  border-radius: 2px;
+}
 </style>
