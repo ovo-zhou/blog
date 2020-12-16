@@ -16,17 +16,19 @@
       </div>
       <div class="content"><router-view /></div>
     </div>
-    <div class="right">右</div>
+    <div class="right"><helplink/></div>
   </div>
 </template>
 
 <script>
 import weather from '../components/weather'
 import music from '../components/music'
+import helplink from '../components/link'
 export default {
   components:{
     weather,
-    music
+    music,
+    helplink
   },
   methods: {
     toCover() {

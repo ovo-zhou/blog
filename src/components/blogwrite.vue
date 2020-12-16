@@ -182,7 +182,7 @@ export default {
             this.getBlog(this.currentSortId);
           }
         });
-      });
+      }).catch(()=>{});
     },
     //打开目录编辑弹窗
     openCatalogEdit(item) {

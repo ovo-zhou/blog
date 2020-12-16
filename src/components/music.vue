@@ -1,7 +1,7 @@
 <template>
   <div class="music">
-    <audio id="play" preload src="http://localhost:5000/upload/123.mp3"></audio>
-    <p class="title">霸王别姬--张国荣</p>
+    <audio id="myAudioPlay" preload :src="curMusic.url"></audio>
+    <p class="title">{{ curMusic.name }}--{{ curMusic.author }}</p>
     <div class="progress">
       <el-progress
         :percentage="percentage"
@@ -10,13 +10,13 @@
       ></el-progress>
     </div>
     <div class="icon">
-      <div class="back">
+      <div class="back" @click="up">
         <img src="../assets/music/up.png" alt="" />
       </div>
-      <div class="back" @click="play">
-        <img src="../assets/music/play.png" alt="" />
+      <div class="back" @click="playOrPause">
+        <img id="playBtn" src="../assets/music/pause.png" alt="" />
       </div>
-      <div class="back">
+      <div class="back" @click="down">
         <img src="../assets/music/down.png" alt="" />
       </div>
       <div class="other_back" @click="openList">
@@ -27,30 +27,47 @@
       </div>
     </div>
     <div class="list" id="list">
-      <p><i class="el-icon-video-play"></i> 第一首</p>
-      <p><i class="el-icon-video-play"></i> 第一首</p>
-      <p><i class="el-icon-video-play"></i> 第一首</p>
-      <p><i class="el-icon-video-play"></i> 第一首</p>
-      <p><i class="el-icon-video-play"></i> 第一首</p>
-      <p><i class="el-icon-video-play"></i> 第一首</p>
-      <p><i class="el-icon-video-play"></i> 第一首</p>
-      <p><i class="el-icon-video-play"></i> 第一首</p>
-      <p><i class="el-icon-video-play"></i> 第一首</p>
+      <template v-for="(item, index) in music">
+        <p :key="index" @click="clickToPlay(item)"><i class="el-icon-video-play"></i> {{ item.name }}</p>
+      </template>
     </div>
   </div>
 </template>
 
 <script>
+import { get } from "../utility/http";
+import server from "../utility/env";
+import pause from "../assets/music/pause.png";
+import play from "../assets/music/play.png";
 export default {
   data() {
     return {
+      music: [],
+      curMusic: {},
+      curIndex: 0,
       percentage: 20,
       customColor: "#409eff",
       listIsOpen: false,
       vol: 50,
+      playState: false,
     };
   },
+  created() {
+    this.getMusic();
+  },
   methods: {
+    getMusic() {
+      get("/api/Music/GetMusic").then((res) => {
+        if (res.status === 200) {
+          res.data.forEach((element) => {
+            element.url = server + "/upload/" + element.url;
+          });
+          console.log(res);
+          this.music = res.data;
+          this.curMusic = this.music[this.curIndex];
+        }
+      });
+    },
     openList() {
       let list = document.getElementById("list");
       if (this.listIsOpen) {
@@ -61,13 +78,50 @@ export default {
         list.style.display = "block";
       }
     },
+    playOrPause() {
+      if (this.playState === true) {
+        this.playState = false;
+        this.pause();
+      } else {
+        this.playState = true;
+        this.play();
+      }
+    },
     play() {
-      let play = document.getElementById("play");
-      play.play();
+      document.getElementById("myAudioPlay").play();
+      document.getElementById("playBtn").src = play;
+    },
+    pause() {
+      document.getElementById("myAudioPlay").pause();
+      document.getElementById("playBtn").src = pause;
+    },
+    up() {
+      this.curIndex = (this.curIndex - 1 + this.music.length) % this.music.length;
+      this.curMusic = this.music[this.curIndex];
+      this.playState = true;
+      document.getElementById("myAudioPlay").addEventListener("canplay", function () {
+        this.play();
+        document.getElementById("playBtn").src = play;
+      });
+    },
+    down() {
+      this.curIndex = (this.curIndex + 1) % this.music.length;
+      this.curMusic = this.music[this.curIndex];
+      this.playState = true;
+      document.getElementById("myAudioPlay").addEventListener("canplay", function () {
+        this.play();
+        document.getElementById("playBtn").src = play;
+      });
+    },
+    clickToPlay(item){
+      this.curMusic=item
+      document.getElementById("myAudioPlay").addEventListener("canplay", function () {
+        this.play();
+        document.getElementById("playBtn").src = play;
+      });
     },
     changeVol() {
-    //   console.log(this.vol);
-      let play = document.getElementById("play");
+      let play = document.getElementById("myAudioPlay");
       play.volume = this.vol / 100;
     },
   },
@@ -145,5 +199,8 @@ export default {
   margin-left: 25px;
   cursor: pointer;
   line-height: 30px;
+}
+.list p:hover{
+ color: #409EFF;
 }
 </style>
