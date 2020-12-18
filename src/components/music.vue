@@ -130,14 +130,8 @@ export default {
 
 <style scoped>
 .music {
-  background-image: url("../assets/music/back.jpg");
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
   width: 450px;
   height: 130px;
-  margin-left: 25px;
-  margin-top: 50px;
-  border-radius: 10px;
 }
 .title {
   margin-left: 25px;

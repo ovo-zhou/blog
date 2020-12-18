@@ -42,10 +42,9 @@ export default {
     },
     toDetail(item){
       this.$router.push({
-        // path:'/home/detail',
-        name:'detail',
-        params:{
-          blog:item
+        path:'/home/detail',
+        query:{
+          blogId:item.blogId
         }
       })
     }

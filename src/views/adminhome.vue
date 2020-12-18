@@ -27,12 +27,14 @@ export default {};
 <style scoped>
 .admin {
   position: relative;
+   width: 1600px;
+  height: 800px;
+margin: 50px auto;
 }
 .header {
   height: 50px;
   width: 100%;
-  background-color:rgb(0,0,0,0.5);
-  border-radius: 20px 20px 0px 0px;
+  background-color:#222324;
   color: white;
 }
 .header_right {
@@ -75,10 +77,9 @@ cursor: pointer;
 }
 .menu {
   width: 150px;
-  height: 750px;
-  background-color:rgb(0,0,0,0.5);
+height: 750px;
+  background-color:#222324;
   color: white;
-  border-radius: 0px 0px 0px 20px;
 }
 .menu>div{
   height: 50px;
@@ -90,11 +91,10 @@ a{
   line-height: 50px;
 }
 .main {
-  /* background: rgb(90, 95, 84); */
   position: absolute;
   top: 50px;
   left: 150px;
-  width: 1450px;
+    width: 1450px;
   height: 750px;
   z-index: 10;
   overflow: auto;

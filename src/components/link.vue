@@ -1,126 +1,88 @@
 <template>
   <div class="link">
-    <el-carousel height="250px">
-
-      <!-- <el-carousel-item>
+    <el-carousel height="250px" :autoplay="false">
+      <el-carousel-item v-for="i in page" :key="i">
         <ul>
-          <li>
+          <li v-for="j in range(i)" :key="j">
             <div class="item">
-              <img src="../assets/icon.png" alt="银河系知名弹幕网站" />
-              <p>bilibili</p>
-            </div>
-          </li>
-          <li>
-            <div class="item">
-              <img src="../assets/icon.png" alt="" />
-              <p>bilibili</p>
-            </div>
-          </li>
-          <li>
-            <div class="item">
-              <img src="../assets/icon.png" alt="" />
-              <p>bilibili</p>
-            </div>
-          </li>
-          <li>
-            <div class="item">
-              <img src="../assets/icon.png" alt="" />
-              <p>bilibili</p>
-            </div>
-          </li>
-          <li>
-            <div class="item">
-              <img src="../assets/icon.png" alt="" />
-              <p>bilibili</p>
-            </div>
-          </li>
-          <li>
-            <div class="item">
-              <img src="../assets/icon.png" alt="" />
-              <p>bilibili</p>
-            </div>
-          </li>
-          <li>
-            <div class="item">
-              <img src="../assets/icon.png" alt="" />
-              <p>bilibili</p>
-            </div>
-          </li>
-          <li>
-            <div class="item">
-              <img src="../assets/icon.png" alt="" />
-              <p>bilibili</p>
+              <img :src="links[j].linkIcon" />
+              <p>{{ links[j].linkName }}</p>
             </div>
           </li>
         </ul>
-      </el-carousel-item> -->
-    
+      </el-carousel-item>
     </el-carousel>
   </div>
 </template>
 <script>
-import {get} from '../utility/http'
-import server from '../utility/env'
+import { get } from "../utility/http";
+import server from "../utility/env";
 export default {
-  data(){
-    return{
-      links:[],
-      total:0,
-      page:0
-    }
+  data() {
+    return {
+      links: [],
+      total: 0,
+      page: 0,
+    };
   },
-  created(){
-    this.GetLink()
+  created() {
+    this.GetLink();
   },
-  computed:{
-    getPage(){
-      return this.total/8
-    }
+  computed: {
+    getPage() {
+      return this.total / 8;
+    },
   },
-  methods:{
-    GetLink(){
-      get("/api/Link/GetLink").then(res=>{
-        if(res.status===200){
-          res.data.forEach(element => {
-            element.linkIcon=server+"/upload/"+element.linkIcon
-          });
-          this.links=res.data
-          this.page=Math.ceil(this.links.length/8);
-          this.total=this.links.length
+  methods: {
+    range(i) {
+      var range = [];
+      for (let k = (i - 1) * 8; k < i * 8; k++) {
+        if (k < this.total) {
+          range.push(k);
         }
-      })
-    }
+      }
+      return range;
+    },
+    GetLink() {
+      get("/api/Link/GetLink").then((res) => {
+        if (res.status === 200) {
+          res.data.forEach((element) => {
+            element.linkIcon = server + "/upload/" + element.linkIcon;
+          });
+          this.links = res.data;
+          this.page = Math.ceil(this.links.length / 8);
+          this.total = this.links.length;
+        }
+      });
+    },
   },
 };
 </script>
 
 <style scoped>
 .link {
-  /* background: #dde1e6; */
   width: 450px;
   height: 250px;
-  margin-left: 25px;
-  margin-top: 50px;
-  border-radius: 10px;
   overflow: hidden;
+  margin-bottom: 50px;
 }
 ul > li {
   display: inline-block;
   margin-left: 25px;
   margin-top: 10px;
 }
-img {
+.item {
+  cursor: pointer;
+}
+.item img {
   width: 80px;
   height: 80px;
   border-radius: 40px;
 }
-.item {
-  /* background: burlywood; */
-}
 .item p {
   text-align: center;
   overflow: hidden;
-	text-overflow:ellipsis;
-	white-space: nowrap;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 </style>

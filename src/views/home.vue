@@ -1,34 +1,45 @@
 <template>
   <div class="home">
-    <div class="left">
-      <weather/>
-      <music/>
-    </div>
-    <div class="center">
-      <div class="bar">
-        <div style="widtd: 100%; height: 90px"></div>
-        <p @click="toCover">封面</p>
-        <p @click="toPreface">序言</p>
-        <p @click="toCatalog">目录</p>
-        <p @click="toCopyright">版权</p>
-        <p @click="toLastpage">尾页</p>
-        <p @click="toMessage">留言</p>
-      </div>
-      <div class="content"><router-view /></div>
-    </div>
-    <div class="right"><helplink/></div>
+    <weekly />
+    <el-row>
+      <el-col :span="14">
+        <div class="center">
+          <div class="bar">
+            <div style="widtd: 100%; height: 90px"></div>
+            <p @click="toCover">封面</p>
+            <p @click="toPreface">序言</p>
+            <p @click="toCatalog">目录</p>
+            <p @click="toCopyright">版权</p>
+            <p @click="toLastpage">尾页</p>
+            <p @click="toMessage">留言</p>
+          </div>
+          <div class="content">
+            <router-view />
+          </div>
+        </div>
+      </el-col>
+      <el-col :span="10">
+        <div>
+          <weather />
+          <helplink />
+          <music />
+        </div>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
 <script>
-import weather from '../components/weather'
-import music from '../components/music'
-import helplink from '../components/link'
+import weather from "../components/weather";
+import music from "../components/music";
+import helplink from "../components/link";
+import weekly from "../components/weekly";
 export default {
-  components:{
+  components: {
     weather,
     music,
-    helplink
+    helplink,
+    weekly,
   },
   methods: {
     toCover() {
@@ -54,36 +65,34 @@ export default {
 </script>
 
 <style scoped>
-.left {
-  width: 500px;
-  height: 800px;
-  float: left;
-  /* background: burlywood; */
+.home {
+  /* background: rgb(17, 200, 233); */
+  width: 1200px;
+  margin: 0px auto;
+}
+.header {
+  background: #09a5be;
+  color: white;
+}
+.header p {
+  line-height: 50px;
+  text-align: center;
+  margin-bottom: 20px;
 }
 .center {
-  width: 600px;
+  width: 650px;
   height: 800px;
   float: left;
-  /* background: chartreuse; */
 }
-.right {
-  width: 500px;
-  height: 800px;
-  float: left;
-  /* background: coral; */
-}
+
 .bar {
-  width: 80px;
+  width: 100px;
   height: 800px;
   float: left;
-  /* background: crimson; */
-  background: #35597b;
 }
 .content {
-  width: 520px;
+  width: 550px;
   height: 800px;
-  /* background: cyan; */
-  background: white;
   float: right;
 }
 .bar p {

@@ -107,25 +107,19 @@ export default {
 </script>
 <style scoped>
 .weather {
-  background: #222831;
+  background: #e8ebf1;
   width: 450px;
   height: 250px;
-  margin-left: 25px;
-  margin-top: 50px;
-  border-radius: 10px;
   overflow: hidden;
+  margin-bottom: 50px;
 }
 .today {
-  background-image: linear-gradient(to bottom right, #4df2f8, #5460e6);
+  /* background-image: linear-gradient(to bottom right, #4df2f8, #5460e6); */
   height: 250px;
-  border-radius: 10px;
-  color: white;
+
+  /* color: white; */
   padding-left: 25px;
   padding-top: 15px;
-}
-.today h2 {
-}
-.today p {
 }
 .today img {
   width: 50px;
@@ -140,7 +134,7 @@ export default {
 .next {
   /* background: blueviolet; */
   height: 250px;
-  color: white;
+  /* color: white; */
   padding-left: 20px;
   padding-right: 20px;
   padding-top: 20px;
@@ -158,7 +152,7 @@ export default {
   height: 100px;
   /* background: red; */
   display: inline-block;
-  border-radius: 10px;
+
 }
 .nextday_item img {
   width: 30px;
@@ -173,7 +167,7 @@ export default {
   width: 100%;
   height: 25px;
   border-radius: 15px;
-  background-image: linear-gradient(to right, #85eef3, #5960e9);
+  /* background-image: linear-gradient(to right, #85eef3, #5960e9); */
   margin-top: 5px;
   text-align: center;
   line-height: 25px;
