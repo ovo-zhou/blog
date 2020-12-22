@@ -181,7 +181,7 @@
 
 <script>
 import server from "../utility/env";
-import { get, post } from "../utility/http";
+import { del, get, post, put } from "../utility/http";
 export default {
   data() {
     return {
@@ -224,13 +224,9 @@ export default {
         this.$message.error("请填写url");
         return;
       }
-      console.log(this.link);
-      post("/api/Link/UpdateLink", this.link).then((res) => {
-        console.log(res);
-        if (res.status === 200) {
-          this.getLink();
-          this.dialogFormVisible3 = false;
-        }
+      put("/api/Link/UpdateLink", this.link).then(() => {
+        this.getLink();
+        this.dialogFormVisible3 = false;
       });
     },
     editLink(item) {
@@ -248,39 +244,32 @@ export default {
         type: "warning",
       })
         .then(() => {
-          post("/api/Link/DeleteLink?id=" + id).then((res) => {
-            console.log(res);
-            if (res.status === 200) {
-              this.getLink();
-              this.$message({
-                message: "删除成功",
-                type: "success",
-              });
-            }
+          del("/api/Link/DeleteLink?id=" + id).then(() => {
+            this.getLink();
+            this.$message({
+              message: "删除成功",
+              type: "success",
+            });
           });
         })
         .catch(() => {});
     },
     getLink() {
       get("/api/Link/GetLink").then((res) => {
-        if (res.status === 200) {
-          res.data.forEach((element) => {
-            element.linkIcon = server + "/upload/" + element.linkIcon;
-          });
-          this.links = res.data;
-        }
+        res.forEach((element) => {
+          element.linkIcon = server + "/upload/" + element.linkIcon;
+        });
+        this.links = res;
       });
     },
     addLink() {
-      this.link.id=0;
+      this.link.id = 0;
       this.link.linkIcon = "";
       this.link.linkName = "";
       this.link.url = "";
       this.dialogFormVisible2 = true;
     },
     uploadLink() {
-      console.log(this.link);
-
       if (this.link.linkIcon === "") {
         this.$message.error("请上传图标");
         return;
@@ -293,18 +282,16 @@ export default {
         this.$message.error("请填写url");
         return;
       }
-      post("/api/Link/CreateLink", this.link).then((res) => {
-        console.log(res);
-        if (res.status === 200) {
-          this.$message({
-            message: "上传成功",
-            type: "success",
-          });
-          this.link.linkIcon = "";
-          this.link.linkName = "";
-          this.link.url = "";
-          this.dialogFormVisible2 = false;
-        }
+      post("/api/Link/CreateLink", this.link).then(() => {
+        this.$message({
+          message: "上传成功",
+          type: "success",
+        });
+        this.link.linkIcon = "";
+        this.link.linkName = "";
+        this.link.url = "";
+        this.dialogFormVisible2 = false;
+        this.getLink();
       });
     },
     successlink(res) {
@@ -327,19 +314,16 @@ export default {
         this.$message.error("请上传歌曲");
         return;
       }
-      post("/api/Music/CreateMusic", this.updateMusic).then((res) => {
-        console.log(res);
-        if (res.status === 200) {
-          this.$message({
-            message: "上传成功",
-            type: "success",
-          });
-          this.updateMusic.name = "";
-          this.updateMusic.url = "";
-          this.updateMusic.author = "";
-          this.fileList = [];
-          this.getMusic();
-        }
+      post("/api/Music/CreateMusic", this.updateMusic).then(() => {
+        this.$message({
+          message: "上传成功",
+          type: "success",
+        });
+        this.updateMusic.name = "";
+        this.updateMusic.url = "";
+        this.updateMusic.author = "";
+        this.fileList = [];
+        this.getMusic();
       });
     },
     remove() {
@@ -354,14 +338,10 @@ export default {
     },
     getMusic() {
       get("/api/Music/GetMusic").then((res) => {
-        console.log(res);
-        if (res.status == 200) {
-          this.music = res.data;
-        }
+        this.music = res;
       });
     },
     editMusic(item) {
-      console.log(item);
       this.updateMusic.musicId = item.musicId;
       this.updateMusic.name = item.name;
       this.updateMusic.author = item.author;
@@ -377,27 +357,20 @@ export default {
         this.$message.error("歌手不能为空");
         return;
       }
-      console.log(this.updateMusic);
-      post("/api/Music/UpdateMusic", this.updateMusic).then((res) => {
-        if (res.status == 200) {
-          this.getMusic();
-          this.dialogFormVisible = false;
-        }
+      put("/api/Music/UpdateMusic", this.updateMusic).then(() => {
+        this.getMusic();
+        this.dialogFormVisible = false;
       });
     },
     deleteMusic(id) {
-      console.log(id);
       this.$confirm("此操作将永久删除该音乐, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
       })
         .then(() => {
-          post("/api/Music/DeleteMusic?id=" + id).then((res) => {
-            console.log(res);
-            if (res.status === 200) {
-              this.getMusic();
-            }
+          del("/api/Music/DeleteMusic?id=" + id).then(() => {
+            this.getMusic();
           });
         })
         .catch(() => {});

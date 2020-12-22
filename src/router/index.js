@@ -5,6 +5,7 @@ Vue.use(VueRouter)
 
 const routes = [
   { path: '/', redirect: '/home' },
+  { path: '/login',component:()=>import('../views/login.vue') },
   {
     path: '/home', component: () => import('../views/home'), redirect: '/home/cover',
     children: [
@@ -24,7 +25,9 @@ const routes = [
       { path: "/admin/blogwrite", component: () => import('../components/blogwrite') },
       { path: "/admin/resourse", component: () => import('../components/resourse') }
     ]
-  }
+  },
+  { path: '*', component:()=>import("../views/error") }
+
 ]
 
 const router = new VueRouter({

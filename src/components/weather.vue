@@ -18,34 +18,45 @@
         <div class="next">
           <div class="param">
             <span class="param_name">空气质量</span>
-            <span class="data">{{weather.data[0].air}}</span>
+            <span class="data">{{ weather.data[0].air }}</span>
           </div>
           <div class="param">
             <span class="param_name">湿度</span>
-            <span class="data">{{weather.data[0].humidity}}%</span>
+            <span class="data">{{ weather.data[0].humidity }}%</span>
           </div>
           <div class="param">
             <span class="param_name">风速</span>
-            <span class="data">{{weather.data[0].win_speed}}</span>
+            <span class="data">{{ weather.data[0].win_speed }}</span>
           </div>
           <div class="nextday">
             <div class="nextday_item">
-              <img :src="require('../assets/cake/' + weather.data[1].wea_img + '.png')" alt="" />
+              <img
+                :src="require('../assets/cake/' + weather.data[1].wea_img + '.png')"
+                alt=""
+              />
               <p>{{ weather.data[1].week }}</p>
               <p>{{ weather.data[1].tem }}</p>
             </div>
             <div class="nextday_item">
-              <img :src="require('../assets/cake/' + weather.data[2].wea_img + '.png')" alt="" />
+              <img
+                :src="require('../assets/cake/' + weather.data[2].wea_img + '.png')"
+                alt=""
+              />
               <p>{{ weather.data[2].week }}</p>
               <p>{{ weather.data[2].tem }}</p>
             </div>
             <div class="nextday_item">
-              <img :src="require('../assets/cake/' + weather.data[3].wea_img + '.png')" alt="" />
+              <img
+                :src="require('../assets/cake/' + weather.data[3].wea_img + '.png')"
+                alt=""
+              />
               <p>{{ weather.data[3].week }}</p>
               <p>{{ weather.data[3].tem }}</p>
             </div>
           </div>
-          <div class="btn" @click="changeCity"><i class="el-icon-map-location"></i>更改位置</div>
+          <div class="btn" @click="changeCity">
+            <i class="el-icon-map-location"></i>更改位置
+          </div>
         </div>
       </el-col>
     </el-row>
@@ -56,7 +67,7 @@ import { get } from "../utility/http";
 export default {
   data() {
     return {
-    //下面给的默认值，如果不给会报错，在created中weather会被覆盖
+      //下面给的默认值，如果不给会报错，在created中weather会被覆盖
       weather: {
         data: [
           {
@@ -89,20 +100,17 @@ export default {
   },
   created() {
     get("/api/Others/weather", { cityName: "武汉" }).then((res) => {
-      console.log(res);
-      if (res.status === 200) {
-        this.weather = res.data;
-      }
+      this.weather = res;
     });
   },
-  methods:{
-      changeCity(){
-           this.$message({
-          message: '功能等待完善',
-          type: 'warning'
-        });
-      }
-  }
+  methods: {
+    changeCity() {
+      this.$message({
+        message: "功能等待完善",
+        type: "warning",
+      });
+    },
+  },
 };
 </script>
 <style scoped>
@@ -152,7 +160,6 @@ export default {
   height: 100px;
   /* background: red; */
   display: inline-block;
-
 }
 .nextday_item img {
   width: 30px;

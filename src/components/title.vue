@@ -33,8 +33,7 @@ export default {
   methods: {
     getTitle() {
       get("/api/Blog/GetTitleBySortId", { sortId: this.$route.query.id }).then((res) => {
-        console.log(res.data);
-        this.title = res.data;
+        this.title = res;
       });
     },
     toCatalog(){

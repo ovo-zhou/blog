@@ -45,14 +45,13 @@ export default {
     },
     GetLink() {
       get("/api/Link/GetLink").then((res) => {
-        if (res.status === 200) {
-          res.data.forEach((element) => {
+          res.forEach((element) => {
             element.linkIcon = server + "/upload/" + element.linkIcon;
           });
-          this.links = res.data;
+          this.links = res;
           this.page = Math.ceil(this.links.length / 8);
           this.total = this.links.length;
-        }
+        
       });
     },
   },

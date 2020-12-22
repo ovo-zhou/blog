@@ -19,22 +19,19 @@ export default {
     };
   },
   created() {
-    this.getBlog()
+    this.getBlog();
   },
   methods: {
     getBlog() {
       this.blogId = this.$route.query.blogId;
       get("/api/Blog/GetBlogById", { id: this.blogId }).then((res) => {
-        console.log(res);
-        if (res.status === 200) {
-          this.blog = res.data;
-        }
+        this.blog = res;
       });
     },
   },
   watch: {
     $route() {
-    this.getBlog()
+      this.getBlog();
     },
   },
 };

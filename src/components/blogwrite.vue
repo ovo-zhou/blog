@@ -19,8 +19,12 @@
                   <el-dropdown>
                     <img class="icon" src="../assets/more.png" />
                     <el-dropdown-menu slot="dropdown">
-                      <el-dropdown-item><p @click="openCatalogEdit(item)">编辑</p></el-dropdown-item>
-                      <el-dropdown-item><p @click="deleteCatalog(item.sortId)">删除</p></el-dropdown-item>
+                      <el-dropdown-item
+                        ><p @click="openCatalogEdit(item)">编辑</p></el-dropdown-item
+                      >
+                      <el-dropdown-item
+                        ><p @click="deleteCatalog(item.sortId)">删除</p></el-dropdown-item
+                      >
                     </el-dropdown-menu>
                   </el-dropdown>
                 </el-col>
@@ -120,7 +124,7 @@
 
 <script>
 import editor from "./tinymce";
-import { get, post } from "../utility/http";
+import { del, get, post, put } from "../utility/http";
 export default {
   data() {
     return {
@@ -152,19 +156,15 @@ export default {
   },
   methods: {
     //删除目录
-    deleteCatalog(id){
-      console.log(id)
+    deleteCatalog(id) {
       this.$confirm("此操作将永久删除该类别下的所有博客, 请谨慎！", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
       }).then(() => {
-        get("/api/Sort/DeleteSort", { id: id }).then((res) => {
-          console.log(res);
-          if (res.status === 200) {
-            this.getSort();
-            this.blog=[]
-          }
+        del("/api/Sort/DeleteSort", { id: id }).then(() => {
+          this.getSort();
+          this.blog = [];
         });
       });
     },
@@ -175,30 +175,25 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
-      }).then(() => {
-        get("/api/Blog/DeleteBlog", { id: id }).then((res) => {
-          console.log(res);
-          if (res.status === 200) {
+      })
+        .then(() => {
+          del("/api/Blog/DeleteBlog", { id: id }).then(() => {
             this.getBlog(this.currentSortId);
-          }
-        });
-      }).catch(()=>{});
+          });
+        })
+        .catch(() => {});
     },
     //打开目录编辑弹窗
     openCatalogEdit(item) {
-      console.log(item);
       this.dialogFormVisible1 = true;
       this.Sort.sortId = item.sortId;
       this.Sort.sortName = item.sortName;
     },
     //更新目录update
     updateSort() {
-      post("/api/Sort/UpdateSort", this.Sort).then((res) => {
-        console.log(res);
-        if (res.status === 200) {
-          this.dialogFormVisible1 = false;
-          this.getSort();
-        }
+      put("/api/Sort/UpdateSort", this.Sort).then(() => {
+        this.dialogFormVisible1 = false;
+        this.getSort();
       });
     },
     openAddCatalog() {
@@ -211,19 +206,15 @@ export default {
         this.$message.error("类别不能为空┗|｀O′|┛ 嗷~~");
         return;
       }
-      post("/api/Sort/AddSort", this.Sort).then((res) => {
-        console.log(res);
-        if (res.status === 200) {
-          this.dialogFormVisible = false;
-          this.getSort();
-        }
+      post("/api/Sort/AddSort", this.Sort).then((/*res*/) => {
+        this.dialogFormVisible = false;
+        this.getSort();
       });
     },
     //查询所有类别
     getSort() {
       get("/api/Blog/GetPreface").then((res) => {
-        console.log(res);
-        this.catalog = res.data;
+        this.catalog = res;
       });
     },
     //查询所有文章
@@ -233,10 +224,7 @@ export default {
     getBlog(id) {
       this.currentSortId = id;
       get("/api/Blog/GetTitleBySortId", { sortId: id }).then((res) => {
-        console.log(res);
-        if (res.status === 200) {
-          this.blog = res.data;
-        }
+        this.blog = res;
       });
     },
     AddBlog() {
@@ -287,31 +275,25 @@ export default {
       }
       console.log(this.form);
       if (this.editState === "update") {
-        post("/api/Blog/UpdateBlog", this.form).then((res) => {
-          if (res.status === 200) {
-            this.$message({
-              message: "保存成功",
-              type: "success",
-            });
-            this.getBlog(this.form.SortId);
-          }
-          console.log(res);
+        put("/api/Blog/UpdateBlog", this.form).then(() => {
+          this.$message({
+            message: "保存成功",
+            type: "success",
+          });
+          this.getBlog(this.form.SortId);
         });
       }
       if (this.editState === "create") {
-        post("/api/Blog/AddBlog", this.form).then((res) => {
-          if (res.status === 200) {
-            this.getBlog(this.form.SortId);
-            this.$message({
-              message: "保存成功",
-              type: "success",
-            });
-            this.form.Title = "";
-            this.form.ReleaseDate = "";
-            this.form.blogId = 0;
-            this.text = "";
-          }
-          console.log(res);
+        post("/api/Blog/AddBlog", this.form).then(() => {
+          this.getBlog(this.form.SortId);
+          this.$message({
+            message: "保存成功",
+            type: "success",
+          });
+          this.form.Title = "";
+          this.form.ReleaseDate = "";
+          this.form.blogId = 0;
+          this.text = "";
         });
       }
     },
@@ -322,9 +304,9 @@ export default {
 <style scoped>
 .catalog {
   background: white;
-  height: 750px;
+  max-height: 850px;
   border-right: rgb(102, 101, 100) solid 1px;
-  overflow:auto;
+  overflow: auto;
 }
 .item {
   /* background: yellowgreen; */
@@ -340,10 +322,10 @@ export default {
   white-space: nowrap;
 }
 .article_title {
-  height: 750px;
+  max-height: 850px;
   background: white;
   border-right: rgb(102, 101, 100) solid 1px;
-overflow: auto;
+  overflow: auto;
 }
 .article_title p {
   line-height: 50px;
@@ -355,7 +337,7 @@ overflow: auto;
 }
 .content {
   background: white;
-  height: 750px;
+  max-height: 850px;
   overflow: auto;
   padding-left: 20px;
   /* padding-top: 20px; */

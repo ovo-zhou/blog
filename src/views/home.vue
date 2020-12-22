@@ -1,6 +1,5 @@
 <template>
   <div class="home">
-    <weekly />
     <el-row>
       <el-col :span="14">
         <div class="center">
@@ -33,13 +32,12 @@
 import weather from "../components/weather";
 import music from "../components/music";
 import helplink from "../components/link";
-import weekly from "../components/weekly";
+
 export default {
   components: {
     weather,
     music,
     helplink,
-    weekly,
   },
   methods: {
     toCover() {
@@ -68,7 +66,7 @@ export default {
 .home {
   /* background: rgb(17, 200, 233); */
   width: 1200px;
-  margin: 0px auto;
+  margin: 30px auto;
 }
 .header {
   background: #09a5be;
@@ -82,7 +80,6 @@ export default {
 .center {
   width: 650px;
   height: 800px;
-  float: left;
 }
 
 .bar {
@@ -94,6 +91,7 @@ export default {
   width: 550px;
   height: 800px;
   float: right;
+  background: #F2F6FC;
 }
 .bar p {
   width: 80px;

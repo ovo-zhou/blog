@@ -58,14 +58,11 @@ export default {
   methods: {
     getMusic() {
       get("/api/Music/GetMusic").then((res) => {
-        if (res.status === 200) {
-          res.data.forEach((element) => {
+          res.forEach((element) => {
             element.url = server + "/upload/" + element.url;
           });
-          console.log(res);
-          this.music = res.data;
-          this.curMusic = this.music[this.curIndex];
-        }
+          this.music = res;
+          this.curMusic = this.music[this.curIndex];    
       });
     },
     openList() {

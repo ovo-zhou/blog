@@ -19,8 +19,7 @@ export default {
   },
   created() {
     get("/api/Blog/GetPreface").then((res) => {
-      console.log(res);
-      this.preface = res.data;
+      this.preface = res;
     });
   },
   computed: {
