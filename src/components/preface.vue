@@ -37,15 +37,8 @@ export default {
   width: 450px;
   height: 700px;
   margin-top: 50px;
-  margin-left: 35px;
+  margin-left: 50px;
   overflow: auto;
-}
-::-webkit-scrollbar {
-  width: 4px;
-}
-::-webkit-scrollbar-thumb {
-  background: #e2e1e1;
-  border-radius: 2px;
 }
 .title {
   font-size: 70px;

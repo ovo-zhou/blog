@@ -4,7 +4,7 @@
       <el-carousel-item v-for="i in page" :key="i">
         <ul>
           <li v-for="j in range(i)" :key="j">
-            <div class="item">
+            <div class="item" @click="toUrl(links[j])">
               <img :src="links[j].linkIcon" />
               <p>{{ links[j].linkName }}</p>
             </div>
@@ -34,6 +34,9 @@ export default {
     },
   },
   methods: {
+    toUrl(item) {
+      window.open(item.url);
+    },
     range(i) {
       var range = [];
       for (let k = (i - 1) * 8; k < i * 8; k++) {
@@ -45,13 +48,12 @@ export default {
     },
     GetLink() {
       get("/api/Link/GetLink").then((res) => {
-          res.forEach((element) => {
-            element.linkIcon = server + "/upload/" + element.linkIcon;
-          });
-          this.links = res;
-          this.page = Math.ceil(this.links.length / 8);
-          this.total = this.links.length;
-        
+        res.forEach((element) => {
+          element.linkIcon = server + "/upload/" + element.linkIcon;
+        });
+        this.links = res;
+        this.page = Math.ceil(this.links.length / 8);
+        this.total = this.links.length;
       });
     },
   },
@@ -71,6 +73,7 @@ ul > li {
   margin-top: 10px;
 }
 .item {
+  width: 80px;
   cursor: pointer;
 }
 .item img {

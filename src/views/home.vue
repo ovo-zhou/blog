@@ -4,13 +4,14 @@
       <el-col :span="14">
         <div class="center">
           <div class="bar">
-            <div style="widtd: 100%; height: 90px"></div>
-            <p @click="toCover">封面</p>
-            <p @click="toPreface">序言</p>
-            <p @click="toCatalog">目录</p>
-            <p @click="toCopyright">版权</p>
-            <p @click="toLastpage">尾页</p>
-            <p @click="toMessage">留言</p>
+            <ul>
+              <li><router-link to="/home/cover"> 封面</router-link></li>
+              <li><router-link to="/home/preface"> 序言</router-link></li>
+              <li><router-link to="/home/catalog"> 目录</router-link></li>
+              <li><router-link to="/home/copyright"> 版权</router-link></li>
+              <li><router-link to="/home/record"> 日志</router-link></li>
+              <li><router-link to="/home/message"> 留言</router-link></li>
+            </ul>
           </div>
           <div class="content">
             <router-view />
@@ -39,43 +40,14 @@ export default {
     music,
     helplink,
   },
-  methods: {
-    toCover() {
-      this.$router.push("/home/cover");
-    },
-    toPreface() {
-      this.$router.push("/home/preface");
-    },
-    toCatalog() {
-      this.$router.push("/home/catalog");
-    },
-    toCopyright() {
-      this.$router.push("/home/copyright");
-    },
-    toLastpage() {
-      this.$router.push("/home/lastpage");
-    },
-    toMessage() {
-      this.$router.push("/home/message");
-    },
-  },
+  methods: {},
 };
 </script>
 
 <style scoped>
 .home {
-  /* background: rgb(17, 200, 233); */
   width: 1200px;
   margin: 30px auto;
-}
-.header {
-  background: #09a5be;
-  color: white;
-}
-.header p {
-  line-height: 50px;
-  text-align: center;
-  margin-bottom: 20px;
 }
 .center {
   width: 650px;
@@ -86,19 +58,29 @@ export default {
   width: 100px;
   height: 800px;
   float: left;
+  /* background: aquamarine; */
 }
 .content {
   width: 550px;
   height: 800px;
   float: right;
-  background: #F2F6FC;
+  /* background: aquamarine; */
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 }
-.bar p {
-  width: 80px;
+ul {
+  list-style: none;
+}
+ul > li {
+  line-height: 50px;
+  font-size: 30px;
+  margin-top: 60px;
   text-align: center;
-  line-height: 100px;
-  font-size: 20px;
-  font-weight: 800;
-  cursor: pointer;
+}
+a {
+  text-decoration: none;
+  color: black;
+}
+.router-link-active {
+  color: #409eff;
 }
 </style>

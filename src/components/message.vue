@@ -7,27 +7,31 @@
     <p>所在地：湖北武汉</p>
     <p>Email:1239746898@qq.com</p>
     <p>QQ:1239746898</p>
-    <p style="font-weight: bold; margin-top: 20px;">留言</p>
-    <hr style="margin-bottom: 20px;" />
-    <el-input
-      type="textarea"
-      :rows="20"
-      placeholder="请输入内容"
-      v-model="textarea"
-    >
+    <p style="font-weight: bold; margin-top: 20px">留言</p>
+    <hr style="margin-bottom: 20px" />
+    <el-input type="textarea" :rows="20" placeholder="请输入内容" v-model="textarea">
     </el-input>
-    <div class="submit"><span class="link">联系方式：<el-input style="width:180px" v-model="input" placeholder="请输入有效的联系方式" size="mini"></el-input></span><span class="submitbtn">提交</span></div>
+    <div class="submit">
+      <span class="link"
+        >联系方式：<el-input
+          style="width: 180px"
+          v-model="input"
+          placeholder="请输入有效的联系方式"
+          size="mini"
+        ></el-input></span
+      ><span class="submitbtn">提交</span>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  data(){
-    return{
-       textarea: '',
-       input:""
-    }
-  }
+  data() {
+    return {
+      textarea: "",
+      input: "",
+    };
+  },
 };
 </script>
 
@@ -37,24 +41,16 @@ export default {
   width: 450px;
   height: 700px;
   margin-top: 50px;
-  margin-left: 35px;
+  margin-left: 50px;
   overflow: auto;
-
-}
-::-webkit-scrollbar {
-  width: 4px;
-}
-::-webkit-scrollbar-thumb {
-  background: #e2e1e1;
-  border-radius: 2px;
 }
 p {
   line-height: 25px;
 }
-.submit{
+.submit {
   margin-top: 10px;
 }
-.submitbtn{
+.submitbtn {
   margin-left: 20px;
   cursor: pointer;
 }

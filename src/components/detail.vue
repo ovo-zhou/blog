@@ -43,7 +43,7 @@ export default {
   width: 450px;
   height: 700px;
   margin-top: 50px;
-  margin-left: 35px;
+  margin-left: 50px;
   overflow: auto;
 }
 span {
